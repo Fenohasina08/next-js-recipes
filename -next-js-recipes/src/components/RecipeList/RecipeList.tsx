@@ -1,7 +1,7 @@
 'use client';
 
 import RecipeCard from '../RecipeCard/RecipeCard';
-import styles from './RecipeList.module.css';
+//import styles from './RecipeList.module.css';
 
 interface Recipe {
   id: string;
