@@ -1,14 +1,18 @@
 [
   {
+    "id": 1,
     "name": "Pâtes carbonara",
     "image": "/images/carbonara.jpg",
     "category": "Plat",
-    "duration": 20
+    "duration": 20,
+    "description": "Un classique italien crémeux."
   },
   {
+    "id": 2,
     "name": "Salade César",
     "image": "/images/cesar.jpg",
     "category": "Entrée",
-    "duration": 15
+    "duration": 15,
+    "description": "Fraîche et croquante."
   }
 ]
