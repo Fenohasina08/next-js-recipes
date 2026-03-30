@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation';
 import Image from 'next/image';
 
 export default function RecipePage({ params }: { params: { id: string } }) {
-  const recipe = recipes.find(r => r.id?.toString() === params.id);
+  const recipe = recipes.find(r => r.id === params.id);
 
   if (!recipe) {
     notFound();
@@ -22,7 +22,20 @@ export default function RecipePage({ params }: { params: { id: string } }) {
       </div>
       <p className="text-gray-600 mb-2">Catégorie : {recipe.category}</p>
       <p className="text-gray-600 mb-4">Durée : {recipe.duration} min</p>
-      <p className="text-gray-800">{recipe.description}</p>
+
+      <h2 className="text-2xl font-semibold mt-6 mb-2">Ingrédients</h2>
+      <ul className="list-disc pl-5 mb-6">
+        {recipe.ingredients.map((ingredient, idx) => (
+          <li key={idx}>{ingredient}</li>
+        ))}
+      </ul>
+
+      <h2 className="text-2xl font-semibold mt-6 mb-2">Étapes</h2>
+      <ol className="list-decimal pl-5">
+        {recipe.steps.map((step, idx) => (
+          <li key={idx} className="mb-2">{step}</li>
+        ))}
+      </ol>
     </div>
   );
 }
