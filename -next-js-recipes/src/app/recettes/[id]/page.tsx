@@ -1,4 +1,4 @@
-import recipes from './recip.json';
+import recipes from '@/data/recipes.json';
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
 
