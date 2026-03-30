@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-//import styles from './RecipeCard.module.css';
+import styles from './RecipeCard.module.css';
 
 interface Recipe {
   id: string;
