@@ -1,7 +1,8 @@
 export interface Recipe {
-  id?: number;
+  id: number;
   name: string;
   image: string;
   category: string;
   duration: number;
+  description?: string;
 }
