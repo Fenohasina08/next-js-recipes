@@ -1,0 +1,14 @@
+[
+  {
+    "name": "Pâtes carbonara",
+    "image": "/images/carbonara.jpg",
+    "category": "Plat",
+    "duration": 20
+  },
+  {
+    "name": "Salade César",
+    "image": "/images/cesar.jpg",
+    "category": "Entrée",
+    "duration": 15
+  }
+]
