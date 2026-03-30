@@ -1,4 +1,4 @@
-import RecipeCard from '../RecipeCard/RecipeCard.jsx'
+import RecipeCard from '../RecipeCard/RecipeCard.tsx'
 import styles from './RecipeList.module.css'
 
 export default function RecipeList({ recipes }) {
