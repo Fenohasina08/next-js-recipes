@@ -18,6 +18,7 @@ export default function Home() {
   };
 
   const handleToggleFavorite = (id: string) => {
+    console.log("Toggle favorite for", id);
     const newFavorites = new Set(favorites);
     if (newFavorites.has(id)) {
       newFavorites.delete(id);
