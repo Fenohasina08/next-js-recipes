@@ -67,6 +67,7 @@
   border: 1px solid #c9c2b6;
   background: #faf8f5;
   cursor: pointer;
+  color: black;
 }
 
 .pin:hover {
