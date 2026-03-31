@@ -1,6 +1,23 @@
-import RecipeList from '@/components/RecipeList/RecipeList'
-import recipes from '../data/recipes.json';
+cat > src/app/page.tsx << 'EOF'
+'use client';
+
+import { useState } from 'react';
+import RecipeList from '@/components/RecipeList/RecipeList';
+import Header from '@/components/Header';
+import recipesData from '@/data/recipes.json';
+import type { Recipe } from '@/types/recipe';
 
 export default function Home() {
-  return <RecipeList recipes={recipes} />;
+  const [recipes, setRecipes] = useState<Recipe[]>(recipesData);
+
+  const handleReverse = () => {
+    setRecipes([...recipes].reverse());
+  };
+
+  return (
+    <>
+      <Header onReverse={handleReverse} />
+      <RecipeList recipes={recipes} />
+    </>
+  );
 }
