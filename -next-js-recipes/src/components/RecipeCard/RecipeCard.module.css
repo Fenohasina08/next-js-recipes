@@ -78,3 +78,28 @@
   outline: 2px solid #6b645a;
   outline-offset: 2px;
 }
+
+actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.35rem;
+  align-items: center;
+}
+
+.favorite {
+  font-size: 1.2rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #6b645a;
+  padding: 0.2rem;
+  transition: color 0.2s;
+}
+
+.favorite.active {
+  color: #ffb347;
+}
+
+.favorite:hover {
+  color: #ff8c00;
+}
