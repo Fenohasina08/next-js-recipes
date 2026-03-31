@@ -32,7 +32,8 @@ export default function RecipeCard({ recipe, isFavorite, onToggleFavorite }: Rec
         </Link>
         <span className={styles.badge}>{recipe.category}</span>
         <p className={styles.duration}>{recipe.duration} min</p>
-        <div className={styles.actions}>
+        <div>
+          <div className={styles.actions}>
           <button
             type="button"
             className={styles.pin}
@@ -48,6 +49,8 @@ export default function RecipeCard({ recipe, isFavorite, onToggleFavorite }: Rec
             {isFavorite ? '★' : '☆'}
           </button>
         </div>
+        </div>
+        
       </div>
     </article>
   );
