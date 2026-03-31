@@ -46,3 +46,38 @@ body {
 .reverse-btn:hover {
   background-color: #f0ebe3;
 }
+
+.search-bar {
+  display: flex;
+  gap: 1rem;
+  padding: 1rem 2rem;
+  background-color: #f8f5f0;
+  border-bottom: 1px solid #e8e3da;
+}
+
+.search-input {
+  flex: 1;
+  padding: 0.5rem 1rem;
+  border: 1px solid #c9c2b6;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+.favorites-btn {
+  padding: 0.5rem 1rem;
+  background-color: #fff;
+  border: 1px solid #c9c2b6;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.2s;
+}
+
+.favorites-btn.active {
+  background-color: #ffd966;
+  border-color: #b8860b;
+}
+
+.favorites-btn:hover {
+  background-color: #f0ebe3;
+}
