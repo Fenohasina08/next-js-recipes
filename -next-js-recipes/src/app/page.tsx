@@ -51,11 +51,14 @@ export default function Home() {
         showFavorites={showFavorites}
         onToggleFavorites={() => setShowFavorites(!showFavorites)}
       />
-      <RecipeList
+      <div className='bg-amber-50'>
+          <RecipeList
         recipes={filteredRecipes}
         favorites={favorites}
         onToggleFavorite={handleToggleFavorite}
       />
+      </div>
+    
     </>
   );
 }
