@@ -1,4 +1,3 @@
-cat > src/app/page.tsx << 'EOF'
 'use client';
 
 import { useState } from 'react';
