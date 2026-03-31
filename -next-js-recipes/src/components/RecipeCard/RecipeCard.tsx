@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Link from 'next/link';
 import styles from './RecipeCard.module.css';
 
 interface Recipe {
@@ -11,24 +12,44 @@ interface Recipe {
   duration: number;
 }
 
-export default function RecipeCard({ recipe }: { recipe: Recipe }) {
+interface RecipeCardProps {
+  recipe: Recipe;
+  isFavorite: boolean;
+  onToggleFavorite: (id: string) => void;
+}
+
+export default function RecipeCard({ recipe, isFavorite, onToggleFavorite }: RecipeCardProps) {
   const [pinned, setPinned] = useState(false);
 
   return (
     <article className={`${styles.card} ${pinned ? styles.pinned : ''}`}>
-      <img className={styles.image} src={recipe.image} alt="" />
+      <Link href={`/recettes/${recipe.id}`}>
+        <img className={styles.image} src={recipe.image} alt="" />
+      </Link>
       <div className={styles.body}>
-        <h2 className={styles.name}>{recipe.name}</h2>
+        <Link href={`/recettes/${recipe.id}`}>
+          <h2 className={styles.name}>{recipe.name}</h2>
+        </Link>
         <span className={styles.badge}>{recipe.category}</span>
         <p className={styles.duration}>{recipe.duration} min</p>
-        <button
-          type="button"
-          className={styles.pin}
-          onClick={() => setPinned((p) => !p)}
-        >
-          {pinned ? 'Unpin' : 'Pin'}
-        </button>
+        <div className={styles.actions}>
+          <button
+            type="button"
+            className={styles.pin}
+            onClick={() => setPinned((p) => !p)}
+          >
+            {pinned ? 'Unpin' : 'Pin'}
+          </button>
+          <button
+            type="button"
+            className={`${styles.favorite} ${isFavorite ? styles.active : ''}`}
+            onClick={() => onToggleFavorite(recipe.id)}
+          >
+            {isFavorite ? '★' : '☆'}
+          </button>
+        </div>
       </div>
     </article>
   );
 }
+ 
