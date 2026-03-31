@@ -25,7 +25,7 @@ export default function RecipeList({ recipes, favorites, onToggleFavorite }: Rec
           <RecipeCard
             recipe={recipe}
             isFavorite={favorites.has(recipe.id)}
-            onToggleFavorite={onToggleFavorite}  // ← transmission correcte
+            onToggleFavorite={onToggleFavorite}   
           />
         </li>
       ))}

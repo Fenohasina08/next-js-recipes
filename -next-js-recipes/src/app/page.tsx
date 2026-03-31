@@ -30,14 +30,12 @@ export default function Home() {
 
   const filteredRecipes = useMemo(() => {
     let filtered = recipes;
-    // Filtre par recherche
-    if (searchTerm.trim() !== '') {
+     if (searchTerm.trim() !== '') {
       filtered = filtered.filter(recipe =>
         recipe.name.toLowerCase().includes(searchTerm.toLowerCase())
       );
     }
-    // Filtre favoris si activé
-    if (showFavorites) {
+     if (showFavorites) {
       filtered = filtered.filter(recipe => favorites.has(recipe.id));
     }
     return filtered;
