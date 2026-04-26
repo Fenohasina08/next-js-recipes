@@ -22,7 +22,7 @@ export default function SearchBar({
         placeholder="🔍 Rechercher une recette..."
         value={searchTerm}
         onChange={(e) => onSearchChange(e.target.value)}
-        className="w-full md:w-1/2 px-5 py-3 border border-gray-300 rounded-xl shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition"
+        className="w-full text-black md:w-1/2 px-5 py-3 border border-gray-300 rounded-xl shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition"
       />
 
       {/* BOUTON FAVORIS */}
