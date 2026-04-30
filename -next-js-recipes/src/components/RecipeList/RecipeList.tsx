@@ -14,10 +14,18 @@ interface Recipe {
 interface RecipeListProps {
   recipes: Recipe[];
   favorites: Set<string>;
-  onToggleFavorite: (id: string) => void;  // ← déclaration explicite
+  pinned: Set<string>;
+  onToggleFavorite: (id: string) => void;
+  onTogglePinned: (id: string) => void;
 }
 
-export default function RecipeList({ recipes, favorites, onToggleFavorite }: RecipeListProps) {
+export default function RecipeList({
+  recipes,
+  favorites,
+  pinned,
+  onToggleFavorite,
+  onTogglePinned,
+}: RecipeListProps) {
   return (
     <ul className={styles.list}>
       {recipes.map((recipe) => (
@@ -25,7 +33,9 @@ export default function RecipeList({ recipes, favorites, onToggleFavorite }: Rec
           <RecipeCard
             recipe={recipe}
             isFavorite={favorites.has(recipe.id)}
-            onToggleFavorite={onToggleFavorite}   
+            isPinned={pinned.has(recipe.id)}
+            onToggleFavorite={onToggleFavorite}
+            onTogglePinned={onTogglePinned}
           />
         </li>
       ))}

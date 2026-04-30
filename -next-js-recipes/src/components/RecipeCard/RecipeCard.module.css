@@ -107,7 +107,7 @@
   padding: 0.5rem 0.8rem;   /* même hauteur que Pin */
   border-radius: 0.75rem;
   border: 1px solid #ddd;
-  background: black;
+  background: purple;
   color: white;
   cursor: pointer;
   transition: all 0.2s;
