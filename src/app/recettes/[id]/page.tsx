@@ -10,7 +10,7 @@ export default function RecipePage({ params }: { params: { id: string } }) {
   }
 
   return (
-    <main className="min-h-screen bg-amber-50 py-10 px-4 fixed top-0 left-0 w-full z-[100]">
+    <main className="min-h-screen bg-amber-50  px-4 fixed top-0 left-0 w-full z-[100]">
       <article className="max-w-3xl mx-auto bg-white rounded-2xl shadow-lg overflow-hidden">
         {/* En-tête avec l'image et les infos principales */}
         <div className="relative h-72 w-full md:h-96">
