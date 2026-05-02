@@ -8,11 +8,11 @@
     "start": "next start",
     "lint": "eslint"
   },
-   "dependencies": {
-  "next": "latest",
-  "react": "latest",
-  "react-dom": "latest"
-},
+  "dependencies": {
+    "next": "^14.2.35",
+    "react": "latest",
+    "react-dom": "latest"
+  },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
