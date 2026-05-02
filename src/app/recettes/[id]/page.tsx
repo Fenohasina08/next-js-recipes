@@ -10,7 +10,7 @@ export default function RecipePage({ params }: { params: { id: string } }) {
   }
 
   return (
-    <div className="max-w-2xl mx-auto p-6">
+    <div className="max-w-2xl mx-auto p-6 bg-amber-800">
       <h1 className="text-3xl font-bold mb-4">{recipe.name}</h1>
       <div className="relative w-full h-64 mb-4">
         <Image
