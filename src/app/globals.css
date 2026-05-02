@@ -1,83 +1,47 @@
 @import "tailwindcss";
 
+/* =========================
+   THEME VARIABLES
+========================= */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Couleurs principales */
+  --color-bg: #ffffff;
+  --color-text: #171717;
+
+  /* Couleurs custom */
+  --color-primary: #2d6a4f;
+  --color-secondary: #f8f5f0;
+  --color-accent: #ffd966;
+
+  /* Bordures / UI */
+  --color-border: #c9c2b6;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
+/* =========================
+   DARK MODE
+========================= */
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --color-bg: #0a0a0a;
+    --color-text: #ededed;
+
+    --color-primary: #40916c;
+    --color-secondary: #1a1a1a;
+    --color-accent: #ffcc00;
+
+    --color-border: #444;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
-}
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1rem 2rem;
-  background-color: #2d6a4f;
-  color: #fff;
-}
+/* =========================
+   TAILWIND MAPPING
+========================= */
+@theme inline {
+  --color-background: var(--color-bg);
+  --color-foreground: var(--color-text);
 
-.reverse-btn {
-  padding: 0.5rem 1rem;
-  background-color: #fff;
-  color: #2d6a4f;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-weight: bold;
-}
-
-.reverse-btn:hover {
-  background-color: #f0ebe3;
-}
-
-.search-bar {
-  display: flex;
-  gap: 1rem;
-  padding: 1rem 2rem;
-  background-color: #f8f5f0;
-  border-bottom: 1px solid #e8e3da;
-}
-
-.search-input {
-  flex: 1;
-  padding: 0.5rem 1rem;
-  border: 1px solid #c9c2b6;
-  border-radius: 4px;
-  font-size: 1rem;
-}
-
-.favorites-btn {
-  padding: 0.5rem 1rem;
-  background-color: #fff;
-  border: 1px solid #c9c2b6;
-  border-radius: 4px;
-  cursor: pointer;
-  font-weight: bold;
-  transition: background-color 0.2s;
-}
-
-.favorites-btn.active {
-  background-color: #ffd966;
-  border-color: #b8860b;
-}
-
-.favorites-btn:hover {
-  background-color: #f0ebe3;
+  --color-primary: var(--color-primary);
+  --color-secondary: var(--color-secondary);
+  --color-accent: var(--color-accent);
+  --color-border: var(--color-border);
 }
