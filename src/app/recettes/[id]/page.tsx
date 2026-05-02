@@ -12,7 +12,7 @@ export default function RecipePage({ params }: { params: { id: string } }) {
   return (
     <main className="min-h-screen bg-amber-50  px-4 fixed top-0 left-0 w-full z-[100]">
       <article className="max-w-3xl mx-auto bg-white rounded-2xl shadow-lg overflow-hidden">
-        {/* En-tête avec l'image et les infos principales */}
+        {/* Header with image and main info */}
         <div className="relative h-72 w-full md:h-96">
           <Image
             src={recipe.image}
@@ -37,12 +37,12 @@ export default function RecipePage({ params }: { params: { id: string } }) {
           </div>
         </div>
 
-        {/* Corps de la recette */}
+        {/* Recipe body */}
         <div className="p-6 md:p-8">
-          {/* Ingrédients */}
+          {/* Ingredients */}
           <section className="mb-8">
             <h2 className="text-2xl font-semibold text-amber-800 flex items-center gap-2 border-b border-amber-200 pb-2 mb-4">
-              <span className="text-3xl">🥣</span> Ingrédients
+              <span className="text-3xl">🥣</span> Ingredients
             </h2>
             <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2">
               {recipe.ingredients.map((ingredient, idx) => (
@@ -54,10 +54,10 @@ export default function RecipePage({ params }: { params: { id: string } }) {
             </ul>
           </section>
 
-          {/* Étapes */}
+          {/* Steps */}
           <section>
             <h2 className="text-2xl font-semibold text-amber-800 flex items-center gap-2 border-b border-amber-200 pb-2 mb-4">
-              <span className="text-3xl">👩‍🍳</span> Préparation
+              <span className="text-3xl">👩‍🍳</span> Preparation
             </h2>
             <ol className="space-y-4">
               {recipe.steps.map((step, idx) => (
@@ -71,7 +71,7 @@ export default function RecipePage({ params }: { params: { id: string } }) {
             </ol>
           </section>
 
-          {/* Bouton retour */}
+          {/* Return button */}
           <div className="mt-10 text-center">
             <a
               href="/"
