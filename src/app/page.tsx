@@ -51,8 +51,7 @@ export default function Home() {
   return (
     <>
       <Header />
-      <div className="flex flex-col items-center justify-center gap-6 py-6 bg-amber-50">
-        {/* Trois boutons sur une ligne */}
+      <div className="fixed top-0 left-0 w-full flex flex-col items-center justify-center gap-6 py-6 bg-amber-50 z-[100]">        {/* Trois boutons sur une ligne */}
         <div className="flex gap-4">
           <button
             onClick={() => setShowPinned(!showPinned)}
