@@ -49,9 +49,12 @@ export default function Home() {
   }, [recipes, searchTerm, showFavorites, showPinned, favorites, pinned]);
 
   return (
-    <>
+  <>
+    {/* HEADER FIXE */}
+    <div className="fixed top-0 left-0 w-full z-[100] bg-amber-50">
       <Header />
-      <div className="fixed top-0 left-0 w-full flex flex-col items-center justify-center gap-6 py-6 bg-amber-50 z-[100]">        {/* Trois boutons sur une ligne */}
+
+      <div className="flex flex-col items-center justify-center gap-6 py-6">
         <div className="flex gap-4">
           <button
             onClick={() => setShowPinned(!showPinned)}
@@ -60,13 +63,15 @@ export default function Home() {
           >
             📌 {showPinned ? 'Épinglés' : 'Pin'}
           </button>
+
           <button
             onClick={() => setShowFavorites(!showFavorites)}
             className={`px-5 py-2 rounded-lg font-medium shadow-md transition 
               ${showFavorites ? 'bg-amber-500 text-white' : 'bg-white text-gray-700 hover:bg-gray-100'}`}
           >
-            {showFavorites ? '⭐ Favoris' : '☆ Favoris'}
+            ⭐ Favoris
           </button>
+
           <button
             onClick={handleReverse}
             className="bg-amber-500 text-white px-5 py-2 rounded-lg font-medium shadow-md hover:bg-amber-600 transition"
@@ -75,21 +80,24 @@ export default function Home() {
           </button>
         </div>
 
-        {/* Barre de recherche en dessous */}
-        <SearchBar searchTerm={searchTerm} onSearchChange={setSearchTerm} />
-      </div>
-
-      {/* Liste des recettes */}
-      <div className="bg-amber-50 pb-8">
-        <RecipeList
-          recipes={filteredRecipes}
-          favorites={favorites}
-          pinned={pinned}
-          onToggleFavorite={handleToggleFavorite}
-          onTogglePinned={handleTogglePinned}
+        <SearchBar
+          searchTerm={searchTerm}
+          onSearchChange={setSearchTerm}
         />
-        <p>fe</p>
       </div>
-    </>
-  );
+    </div>
+
+    {/* CONTENU */}
+    <div className="pt-[220px] bg-amber-50 pb-15">
+      <RecipeList
+        recipes={filteredRecipes}
+        favorites={favorites}
+        pinned={pinned}
+        onToggleFavorite={handleToggleFavorite}
+        onTogglePinned={handleTogglePinned}
+      />
+    </div>
+  </>
+);
+  
 }
