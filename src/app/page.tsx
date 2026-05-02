@@ -7,7 +7,7 @@ import SearchBar from '@/components/SearchBar';
 import recipesData from '@/data/recipes.json';
 import type { Recipe } from '@/types/recipe';
 
- export default function Home() {
+export default function Home() {
   const [recipes, setRecipes] = useState<Recipe[]>(recipesData);
   const [searchTerm, setSearchTerm] = useState('');
   const [showFavorites, setShowFavorites] = useState(false);
@@ -15,59 +15,95 @@ import type { Recipe } from '@/types/recipe';
   const [favorites, setFavorites] = useState<Set<string>>(new Set());
   const [pinned, setPinned] = useState<Set<string>>(new Set());
 
-  const handleReverse = () => setRecipes([...recipes].reverse());
+  const handleReverse = () => {
+    setRecipes(prev => [...prev].reverse());
+  };
 
   const handleToggleFavorite = (id: string) => {
     const newFavorites = new Set(favorites);
-    if (newFavorites.has(id)) newFavorites.delete(id);
-    else newFavorites.add(id);
+    newFavorites.has(id) ? newFavorites.delete(id) : newFavorites.add(id);
     setFavorites(newFavorites);
   };
 
   const handleTogglePinned = (id: string) => {
     const newPinned = new Set(pinned);
-    if (newPinned.has(id)) newPinned.delete(id);
-    else newPinned.add(id);
+    newPinned.has(id) ? newPinned.delete(id) : newPinned.add(id);
     setPinned(newPinned);
   };
 
   const filteredRecipes = useMemo(() => {
     let filtered = recipes;
+
     if (searchTerm.trim()) {
       filtered = filtered.filter(recipe =>
         recipe.name.toLowerCase().includes(searchTerm.toLowerCase())
       );
     }
+
     if (showFavorites && showPinned) {
-      filtered = filtered.filter(recipe => favorites.has(recipe.id) && pinned.has(recipe.id));
+      filtered = filtered.filter(r => favorites.has(r.id) && pinned.has(r.id));
     } else if (showFavorites) {
-      filtered = filtered.filter(recipe => favorites.has(recipe.id));
+      filtered = filtered.filter(r => favorites.has(r.id));
     } else if (showPinned) {
-      filtered = filtered.filter(recipe => pinned.has(recipe.id));
+      filtered = filtered.filter(r => pinned.has(r.id));
     }
+
     return filtered;
   }, [recipes, searchTerm, showFavorites, showPinned, favorites, pinned]);
 
   return (
     <>
-      <Header onReverse={handleReverse} />
-      <SearchBar
-        searchTerm={searchTerm}
-        onSearchChange={setSearchTerm}
-        showFavorites={showFavorites}
-        onToggleFavorites={() => setShowFavorites(!showFavorites)}
-        showPinned={showPinned}
-        onTogglePinned={() => setShowPinned(!showPinned)}
-      />
-      <div className='bg-amber-50'>
-        <RecipeList
-          recipes={filteredRecipes}
-          favorites={favorites}
-          pinned={pinned}
-          onToggleFavorite={handleToggleFavorite}
-          onTogglePinned={handleTogglePinned}
-        />
+      <Header />
+
+      {/* CONTENEUR CENTRAL */}
+      <div className="flex flex-col items-center gap-4 py-6 bg-amber-50">
+
+        {/* BOUTONS */}
+        <div className="flex gap-4">
+
+          <button
+            onClick={() => setShowPinned(!showPinned)}
+            className={`px-4 py-2 rounded-lg font-medium shadow-md transition 
+            ${showPinned ? 'bg-yellow-400' : 'bg-white'}`}
+          >
+            Pinned
+          </button>
+
+          <button
+            onClick={() => setShowFavorites(!showFavorites)}
+            className={`px-4 py-2 rounded-lg font-medium shadow-md transition 
+            ${showFavorites ? 'bg-yellow-400' : 'bg-white'}`}
+          >
+            Favorites
+          </button>
+
+          <button
+            onClick={handleReverse}
+            className="bg-amber-500 text-white px-4 py-2 rounded-lg font-medium shadow-md hover:bg-amber-600 transition"
+          >
+            Reverse order
+          </button>
+
+        </div>
+
+        {/* SEARCH */}
+        <div className="w-full max-w-xl">
+          <SearchBar
+            searchTerm={searchTerm}
+            onSearchChange={setSearchTerm}
+          />
+        </div>
+
       </div>
+
+      {/* LISTE */}
+      <RecipeList
+        recipes={filteredRecipes}
+        favorites={favorites}
+        pinned={pinned}
+        onToggleFavorite={handleToggleFavorite}
+        onTogglePinned={handleTogglePinned}
+      />
     </>
   );
 }
