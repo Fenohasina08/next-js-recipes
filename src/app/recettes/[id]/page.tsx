@@ -6,24 +6,37 @@ import Image from 'next/image';
 import { useRecipeStore } from '@/stores/recipeStore';
 
 export default function RecipePage({ params }: { params: { id: string } }) {
-  // Hydratation du store (nécessaire si ce composant est rendu côté serveur)
+  // Hydratation au montage
   useEffect(() => {
     useRecipeStore.persist.rehydrate();
   }, []);
 
-  // Récupère la recette depuis le store Zustand, qui contient à la fois les données json et les ajouts utilisateur
   const recipe = useRecipeStore((s) =>
     s.recipes.find((r) => r.id === params.id)
   );
+  const hasHydrated = useRecipeStore((s) => s._hasHydrated);
 
+  // Pendant l'hydratation, on attend (évite le 404 prématuré)
+  if (!hasHydrated) {
+    return (
+      <div className="min-h-screen bg-amber-50 flex items-center justify-center">
+        <p className="text-gray-500">Loading...</p>
+      </div>
+    );
+  }
+
+  // Maintenant que l'hydratation est faite, on vérifie vraiment
   if (!recipe) {
     notFound();
   }
 
+  // Suite de l'affichage (identique à avant)
+  const hasIngredients = recipe.ingredients && recipe.ingredients.length > 0;
+  const hasSteps = recipe.steps && recipe.steps.length > 0;
+
   return (
     <main className="min-h-screen bg-amber-50 px-4 pt-6">
       <article className="max-w-3xl mx-auto bg-white rounded-2xl shadow-lg overflow-hidden">
-        {/* Header with image and main info */}
         <div className="relative h-72 w-full md:h-96">
           <Image
             src={recipe.image}
@@ -40,13 +53,14 @@ export default function RecipePage({ params }: { params: { id: string } }) {
           </div>
         </div>
 
-        {/* Recipe body - adaptez selon la structure réelle de Recipe */}
         <div className="p-6 md:p-8">
-          {recipe.ingredients && (
-            <section className="mb-8">
-              <h2 className="text-2xl font-semibold text-amber-800 mb-4">
-                🥣 Ingredients
-              </h2>
+          {/* Ingrédients */}
+          <section className="mb-8">
+            <h2 className="text-2xl font-semibold text-amber-800 flex items-center gap-2 border-b border-amber-200 pb-2 mb-4">
+              <span className="text-3xl">🥣</span> Ingredients
+              {!hasIngredients && <span className="text-amber-500 text-xl ml-1">+</span>}
+            </h2>
+            {hasIngredients ? (
               <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                 {recipe.ingredients.map((ing, idx) => (
                   <li key={idx} className="flex items-start gap-2 text-gray-700">
@@ -55,14 +69,18 @@ export default function RecipePage({ params }: { params: { id: string } }) {
                   </li>
                 ))}
               </ul>
-            </section>
-          )}
+            ) : (
+              <div className="min-h-[2rem] text-gray-400 italic" />
+            )}
+          </section>
 
-          {recipe.steps && (
-            <section className="mb-8">
-              <h2 className="text-2xl font-semibold text-amber-800 mb-4">
-                👩‍🍳 Preparation
-              </h2>
+          {/* Préparation */}
+          <section className="mb-8">
+            <h2 className="text-2xl font-semibold text-amber-800 flex items-center gap-2 border-b border-amber-200 pb-2 mb-4">
+              <span className="text-3xl">👩‍🍳</span> Preparation
+              {!hasSteps && <span className="text-amber-500 text-xl ml-1">+</span>}
+            </h2>
+            {hasSteps ? (
               <ol className="space-y-4">
                 {recipe.steps.map((step, idx) => (
                   <li key={idx} className="flex gap-4">
@@ -73,14 +91,16 @@ export default function RecipePage({ params }: { params: { id: string } }) {
                   </li>
                 ))}
               </ol>
-            </section>
-          )}
+            ) : (
+              <div className="min-h-[2rem] text-gray-400 italic" />
+            )}
+          </section>
 
-          {/* Description (utilisée pour les recettes ajoutées manuellement) */}
+          {/* Description (recettes utilisateur) */}
           {recipe.description && (
             <section className="mb-8">
-              <h2 className="text-2xl font-semibold text-amber-800 mb-4">
-                📝 Description
+              <h2 className="text-2xl font-semibold text-amber-800 flex items-center gap-2 border-b border-amber-200 pb-2 mb-4">
+                <span className="text-3xl">📝</span> Description
               </h2>
               <p className="text-gray-700 leading-relaxed">{recipe.description}</p>
             </section>

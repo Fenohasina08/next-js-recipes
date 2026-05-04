@@ -7,8 +7,8 @@ interface RecipeStore {
   recipes: Recipe[];
   favorites: string[];
   pinned: string[];
+  _hasHydrated: boolean; // 👈 indique que l'hydratation est terminée
 
-  // Actions
   addRecipe: (recipe: Recipe) => void;
   reverseRecipes: () => void;
   toggleFavorite: (id: string) => void;
@@ -18,10 +18,10 @@ interface RecipeStore {
 export const useRecipeStore = create<RecipeStore>()(
   persist(
     (set) => ({
-      // État initial = les données du fichier JSON
       recipes: recipesData,
       favorites: [],
       pinned: [],
+      _hasHydrated: false,
 
       addRecipe: (recipe) =>
         set((state) => ({ recipes: [recipe, ...state.recipes] })),
@@ -44,8 +44,12 @@ export const useRecipeStore = create<RecipeStore>()(
         })),
     }),
     {
-      name: 'recipe-app-storage', // clé dans localStorage
-      skipHydration: true, // pour éviter le mismatch SSR
+      name: 'recipe-app-storage',
+      skipHydration: true,
+      // Appelée quand l'hydratation est terminée
+      onRehydrateStorage: () => (state) => {
+        state._hasHydrated = true;
+      },
     }
   )
 );
