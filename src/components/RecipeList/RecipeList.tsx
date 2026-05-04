@@ -13,8 +13,8 @@ interface Recipe {
 
 interface RecipeListProps {
   recipes: Recipe[];
-  favorites: Set<string>;
-  pinned: Set<string>;
+  favorites: string[];
+  pinned: string[];
   onToggleFavorite: (id: string) => void;
   onTogglePinned: (id: string) => void;
 }
@@ -32,8 +32,8 @@ export default function RecipeList({
         <li key={recipe.id} className={styles.item}>
           <RecipeCard
             recipe={recipe}
-            isFavorite={favorites.has(recipe.id)}
-            isPinned={pinned.has(recipe.id)}
+            isFavorite={favorites.includes(recipe.id)}
+            isPinned={pinned.includes(recipe.id)}
             onToggleFavorite={onToggleFavorite}
             onTogglePinned={onTogglePinned}
           />
