@@ -2,14 +2,7 @@
 
 import RecipeCard from '../RecipeCard/RecipeCard';
 import styles from './RecipeList.module.css';
-
-interface Recipe {
-  id: string;
-  name: string;
-  image: string;
-  category: string;
-  duration: number;
-}
+import type { Recipe } from '@/types/recipe'; // ← Utilise le type partagé
 
 interface RecipeListProps {
   recipes: Recipe[];
