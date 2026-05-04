@@ -15,8 +15,24 @@ export default function Home() {
   const [favorites, setFavorites] = useState<Set<string>>(new Set());
   const [pinned, setPinned] = useState<Set<string>>(new Set());
 
-  const handleReverse = () => setRecipes([...recipes].reverse());
+  // 🔹 Ajouter une recette (version simple pour test)
+  const handleAdd = () => {
+    const newRecipe: Recipe = {
+      id: Date.now().toString(),
+      name: `New Recipe ${recipes.length + 1}`,
+      image: '/images/default.jpg', // adapte si besoin
+      description: 'Nouvelle recette ajoutée',
+    };
 
+    setRecipes([newRecipe, ...recipes]); // ajout en haut
+  };
+
+  // 🔹 Inverser l'ordre
+  const handleReverse = () => {
+    setRecipes([...recipes].reverse());
+  };
+
+  // 🔹 Favoris
   const handleToggleFavorite = (id: string) => {
     const newFavorites = new Set(favorites);
     if (newFavorites.has(id)) newFavorites.delete(id);
@@ -24,6 +40,7 @@ export default function Home() {
     setFavorites(newFavorites);
   };
 
+  // 🔹 Pin
   const handleTogglePinned = (id: string) => {
     const newPinned = new Set(pinned);
     if (newPinned.has(id)) newPinned.delete(id);
@@ -31,55 +48,81 @@ export default function Home() {
     setPinned(newPinned);
   };
 
+  // 🔹 Filtrage
   const filteredRecipes = useMemo(() => {
     let filtered = recipes;
+
     if (searchTerm.trim()) {
       filtered = filtered.filter(recipe =>
         recipe.name.toLowerCase().includes(searchTerm.toLowerCase())
       );
     }
+
     if (showFavorites && showPinned) {
-      filtered = filtered.filter(recipe => favorites.has(recipe.id) && pinned.has(recipe.id));
+      filtered = filtered.filter(
+        recipe => favorites.has(recipe.id) && pinned.has(recipe.id)
+      );
     } else if (showFavorites) {
       filtered = filtered.filter(recipe => favorites.has(recipe.id));
     } else if (showPinned) {
       filtered = filtered.filter(recipe => pinned.has(recipe.id));
     }
+
     return filtered;
   }, [recipes, searchTerm, showFavorites, showPinned, favorites, pinned]);
 
   return (
     <>
-      {/* FIXED HEADER */}
+      {/* HEADER FIXE */}
       <div className="fixed top-0 left-0 w-full z-[100] bg-amber-50">
         <Header />
 
         <div className="flex flex-col items-center justify-center gap-6 py-6">
-          <div className="flex gap-4">
+          
+          {/* 🔹 BOUTONS */}
+          <div className="flex flex-wrap gap-4 justify-center">
+
+            {/* ADD BUTTON */}
+            <button
+              onClick={handleAdd}
+              className="flex items-center gap-2 bg-green-500 text-white px-5 py-2 rounded-lg font-medium shadow-md hover:bg-green-600 transition"
+            >
+              ➕ Add
+            </button>
+
+            {/* PIN */}
             <button
               onClick={() => setShowPinned(!showPinned)}
               className={`px-5 py-2 rounded-lg font-medium shadow-md transition 
-                ${showPinned ? 'bg-amber-500 text-white' : 'bg-white text-gray-700 hover:bg-gray-100'}`}
+                ${showPinned 
+                  ? 'bg-amber-500 text-white' 
+                  : 'bg-white text-gray-700 hover:bg-gray-100'}`}
             >
               📌 {showPinned ? 'Pinned' : 'Pin'}
             </button>
 
+            {/* FAVORITES */}
             <button
               onClick={() => setShowFavorites(!showFavorites)}
               className={`px-5 py-2 rounded-lg font-medium shadow-md transition 
-                ${showFavorites ? 'bg-amber-500 text-white' : 'bg-white text-gray-700 hover:bg-gray-100'}`}
+                ${showFavorites 
+                  ? 'bg-amber-500 text-white' 
+                  : 'bg-white text-gray-700 hover:bg-gray-100'}`}
             >
               ⭐ Favorites
             </button>
 
+            {/* REVERSE */}
             <button
               onClick={handleReverse}
               className="bg-amber-500 text-white px-5 py-2 rounded-lg font-medium shadow-md hover:bg-amber-600 transition"
             >
               Reverse order
             </button>
+
           </div>
 
+          {/* 🔹 SEARCH */}
           <SearchBar
             searchTerm={searchTerm}
             onSearchChange={setSearchTerm}
@@ -87,7 +130,7 @@ export default function Home() {
         </div>
       </div>
 
-      {/* CONTENT */}
+      {/* CONTENU */}
       <div className="pt-[220px] bg-amber-50 pb-15">
         <RecipeList
           recipes={filteredRecipes}
