@@ -15,16 +15,50 @@ export default function Home() {
   const [favorites, setFavorites] = useState<Set<string>>(new Set());
   const [pinned, setPinned] = useState<Set<string>>(new Set());
 
-  // 🔹 Ajouter une recette (version simple pour test)
+  // 🔥 NEW STATES (MODAL + FORM)
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [newRecipe, setNewRecipe] = useState({
+    name: '',
+    image: '',
+    description: '',
+  });
+
+  // 🔹 Ouvrir le modal
   const handleAdd = () => {
-    const newRecipe: Recipe = {
+    setIsModalOpen(true);
+  };
+
+  // 🔹 Gestion input
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    setNewRecipe({
+      ...newRecipe,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  // 🔹 Submit formulaire
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+
+    const recipeToAdd: Recipe = {
       id: Date.now().toString(),
-      name: `New Recipe ${recipes.length + 1}`,
-      image: '/images/default.jpg', // adapte si besoin
-      description: 'Nouvelle recette ajoutée',
+      name: newRecipe.name,
+      image: newRecipe.image || '/images/default.jpg',
+      description: newRecipe.description,
     };
 
-    setRecipes([newRecipe, ...recipes]); // ajout en haut
+    setRecipes([recipeToAdd, ...recipes]);
+
+    // reset
+    setNewRecipe({
+      name: '',
+      image: '',
+      description: '',
+    });
+
+    setIsModalOpen(false);
   };
 
   // 🔹 Inverser l'ordre
@@ -140,6 +174,68 @@ export default function Home() {
           onTogglePinned={handleTogglePinned}
         />
       </div>
+
+      {/* 🔥 MODAL */}
+      {isModalOpen && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-[200]">
+          
+          <div className="bg-white p-6 rounded-xl shadow-xl w-[90%] max-w-md">
+            
+            <h2 className="text-xl font-bold mb-4">Add Recipe</h2>
+
+            <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+              
+              <input
+                type="text"
+                name="name"
+                placeholder="Recipe name"
+                value={newRecipe.name}
+                onChange={handleChange}
+                required
+                className="border p-2 rounded"
+              />
+
+              <input
+                type="text"
+                name="image"
+                placeholder="Image URL"
+                value={newRecipe.image}
+                onChange={handleChange}
+                className="border p-2 rounded"
+              />
+
+              <textarea
+                name="description"
+                placeholder="Description"
+                value={newRecipe.description}
+                onChange={handleChange}
+                required
+                className="border p-2 rounded"
+              />
+
+              {/* ACTIONS */}
+              <div className="flex justify-end gap-3 mt-2">
+                
+                <button
+                  type="button"
+                  onClick={() => setIsModalOpen(false)}
+                  className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300"
+                >
+                  Cancel
+                </button>
+
+                <button
+                  type="submit"
+                  className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
+                >
+                  Add
+                </button>
+
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </>
   );
 }
