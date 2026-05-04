@@ -2,14 +2,7 @@
 
 import Link from 'next/link';
 import styles from './RecipeCard.module.css';
-
-interface Recipe {
-  id: string;
-  name: string;
-  image: string;
-  category: string;
-  duration: number;
-}
+import type { Recipe } from '@/types/recipe'; // ← type partagé
 
 interface RecipeCardProps {
   recipe: Recipe;
@@ -35,8 +28,13 @@ export default function RecipeCard({
         <Link href={`/recettes/${recipe.id}`}>
           <h2 className={styles.name}>{recipe.name}</h2>
         </Link>
-        <span className={styles.badge}>{recipe.category}</span>
-        <p className={styles.duration}>{recipe.duration} min</p>
+        {/* Valeurs par défaut pour les champs optionnels */}
+        <span className={styles.badge}>
+          {recipe.category ?? 'Sans catégorie'}
+        </span>
+        <p className={styles.duration}>
+          {recipe.duration ? `${recipe.duration} min` : '?'}
+        </p>
         <div className={styles.actions}>
           <button
             type="button"
