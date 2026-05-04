@@ -7,7 +7,7 @@ interface RecipeStore {
   recipes: Recipe[];
   favorites: string[];
   pinned: string[];
-  _hasHydrated: boolean; // 👈 indique que l'hydratation est terminée
+  _hasHydrated: boolean;
 
   addRecipe: (recipe: Recipe) => void;
   reverseRecipes: () => void;
@@ -46,9 +46,11 @@ export const useRecipeStore = create<RecipeStore>()(
     {
       name: 'recipe-app-storage',
       skipHydration: true,
-      // Appelée quand l'hydratation est terminée
+      // 👇 Correction
       onRehydrateStorage: () => (state) => {
-        state._hasHydrated = true;
+        if (state) {
+          state._hasHydrated = true;
+        }
       },
     }
   )
