@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import RecipeList from '@/components/RecipeList/RecipeList';
 import Header from '@/components/Header';
 import SearchBar from '@/components/SearchBar';
@@ -8,14 +8,23 @@ import recipesData from '@/data/recipes.json';
 import type { Recipe } from '@/types/recipe';
 
 export default function Home() {
-  const [recipes, setRecipes] = useState<Recipe[]>(recipesData);
+
+  // 🔥 MODIF 1 : initialisation avec localStorage
+  const [recipes, setRecipes] = useState<Recipe[]>(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('recipes');
+      return saved ? JSON.parse(saved) : recipesData;
+    }
+    return recipesData;
+  });
+
   const [searchTerm, setSearchTerm] = useState('');
   const [showFavorites, setShowFavorites] = useState(false);
   const [showPinned, setShowPinned] = useState(false);
   const [favorites, setFavorites] = useState<Set<string>>(new Set());
   const [pinned, setPinned] = useState<Set<string>>(new Set());
 
-  // 🔥 NEW STATES (MODAL + FORM)
+  // 🔥 MODIF 2 : modal + formulaire
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [newRecipe, setNewRecipe] = useState({
     name: '',
@@ -23,12 +32,17 @@ export default function Home() {
     description: '',
   });
 
-  // 🔹 Ouvrir le modal
+  // 🔥 MODIF 3 : sauvegarde automatique localStorage
+  useEffect(() => {
+    localStorage.setItem('recipes', JSON.stringify(recipes));
+  }, [recipes]);
+
+  // 🔹 Ouvrir modal
   const handleAdd = () => {
     setIsModalOpen(true);
   };
 
-  // 🔹 Gestion input
+  // 🔹 Input form
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
@@ -38,7 +52,7 @@ export default function Home() {
     });
   };
 
-  // 🔹 Submit formulaire
+  // 🔹 Submit form
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -51,7 +65,7 @@ export default function Home() {
 
     setRecipes([recipeToAdd, ...recipes]);
 
-    // reset
+    // reset form
     setNewRecipe({
       name: '',
       image: '',
@@ -61,12 +75,12 @@ export default function Home() {
     setIsModalOpen(false);
   };
 
-  // 🔹 Inverser l'ordre
+  // 🔹 reverse
   const handleReverse = () => {
     setRecipes([...recipes].reverse());
   };
 
-  // 🔹 Favoris
+  // 🔹 favorites
   const handleToggleFavorite = (id: string) => {
     const newFavorites = new Set(favorites);
     if (newFavorites.has(id)) newFavorites.delete(id);
@@ -74,7 +88,7 @@ export default function Home() {
     setFavorites(newFavorites);
   };
 
-  // 🔹 Pin
+  // 🔹 pinned
   const handleTogglePinned = (id: string) => {
     const newPinned = new Set(pinned);
     if (newPinned.has(id)) newPinned.delete(id);
@@ -82,7 +96,7 @@ export default function Home() {
     setPinned(newPinned);
   };
 
-  // 🔹 Filtrage
+  // 🔹 filter
   const filteredRecipes = useMemo(() => {
     let filtered = recipes;
 
@@ -107,16 +121,15 @@ export default function Home() {
 
   return (
     <>
-      {/* HEADER FIXE */}
+      {/* HEADER */}
       <div className="fixed top-0 left-0 w-full z-[100] bg-amber-50">
         <Header />
 
         <div className="flex flex-col items-center justify-center gap-6 py-6">
-          
-          {/* 🔹 BOUTONS */}
+
           <div className="flex flex-wrap gap-4 justify-center">
 
-            {/* ADD BUTTON */}
+            {/* ADD */}
             <button
               onClick={handleAdd}
               className="flex items-center gap-2 bg-green-500 text-white px-5 py-2 rounded-lg font-medium shadow-md hover:bg-green-600 transition"
@@ -128,9 +141,7 @@ export default function Home() {
             <button
               onClick={() => setShowPinned(!showPinned)}
               className={`px-5 py-2 rounded-lg font-medium shadow-md transition 
-                ${showPinned 
-                  ? 'bg-amber-500 text-white' 
-                  : 'bg-white text-gray-700 hover:bg-gray-100'}`}
+                ${showPinned ? 'bg-amber-500 text-white' : 'bg-white text-gray-700 hover:bg-gray-100'}`}
             >
               📌 {showPinned ? 'Pinned' : 'Pin'}
             </button>
@@ -139,9 +150,7 @@ export default function Home() {
             <button
               onClick={() => setShowFavorites(!showFavorites)}
               className={`px-5 py-2 rounded-lg font-medium shadow-md transition 
-                ${showFavorites 
-                  ? 'bg-amber-500 text-white' 
-                  : 'bg-white text-gray-700 hover:bg-gray-100'}`}
+                ${showFavorites ? 'bg-amber-500 text-white' : 'bg-white text-gray-700 hover:bg-gray-100'}`}
             >
               ⭐ Favorites
             </button>
@@ -156,7 +165,6 @@ export default function Home() {
 
           </div>
 
-          {/* 🔹 SEARCH */}
           <SearchBar
             searchTerm={searchTerm}
             onSearchChange={setSearchTerm}
@@ -164,7 +172,7 @@ export default function Home() {
         </div>
       </div>
 
-      {/* CONTENU */}
+      {/* CONTENT */}
       <div className="pt-[220px] bg-amber-50 pb-15">
         <RecipeList
           recipes={filteredRecipes}
@@ -175,16 +183,16 @@ export default function Home() {
         />
       </div>
 
-      {/* 🔥 MODAL */}
+      {/* MODAL */}
       {isModalOpen && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-[200]">
-          
+
           <div className="bg-white p-6 rounded-xl shadow-xl w-[90%] max-w-md">
-            
+
             <h2 className="text-xl font-bold mb-4">Add Recipe</h2>
 
             <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-              
+
               <input
                 type="text"
                 name="name"
@@ -213,9 +221,8 @@ export default function Home() {
                 className="border p-2 rounded"
               />
 
-              {/* ACTIONS */}
               <div className="flex justify-end gap-3 mt-2">
-                
+
                 <button
                   type="button"
                   onClick={() => setIsModalOpen(false)}
@@ -233,6 +240,7 @@ export default function Home() {
 
               </div>
             </form>
+
           </div>
         </div>
       )}
